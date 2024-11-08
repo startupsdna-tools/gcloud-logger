@@ -37,6 +37,7 @@ export function createLogger(options?: LoggerOptions | string) {
 
   const logger = winston.createLogger({
     level: process.env.LOGGER_LEVEL || 'info',
+    silent: process.env.NODE_ENV === 'test',
     ...options,
   });
 
