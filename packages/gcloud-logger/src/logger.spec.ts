@@ -1,27 +1,37 @@
 import { createLogger } from './logger';
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 it('should log to console in non test environment', async () => {
   // arrange
-  process.env.NODE_ENV = 'not test';
+  jest.replaceProperty(process.env, 'NODE_ENV', 'not test');
   const logger = createLogger();
-  const logMethodSpy = jest.spyOn(logger.transports[0], 'log');
+  const logFn = jest.fn();
+  for (const transport of logger.transports) {
+    jest.spyOn(transport, 'log').mockImplementation(logFn);
+  }
 
   // act
   logger.info('test message');
 
   // assert
-  expect(logMethodSpy).toHaveBeenCalled();
+  expect(logFn).toHaveBeenCalled();
 });
 
 it('should be silent in test environment', async () => {
   // arrange
-  process.env.NODE_ENV = 'test';
+  jest.replaceProperty(process.env, 'NODE_ENV', 'test');
   const logger = createLogger();
-  const logMethodSpy = jest.spyOn(logger.transports[0], 'log');
+  const logFn = jest.fn();
+  for (const transport of logger.transports) {
+    jest.spyOn(transport, 'log').mockImplementation(logFn);
+  }
 
   // act
   logger.info('test message');
 
   // assert
-  expect(logMethodSpy).not.toHaveBeenCalled();
+  expect(logFn).not.toHaveBeenCalled();
 });
