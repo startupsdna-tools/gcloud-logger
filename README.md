@@ -6,7 +6,7 @@
    and adding the following lines:
 
     ```
-    @startupsdna-tπools:registry=https://europe-npm.pkg.dev/startupsdna-tools/npm-public/
+    @startupsdna-tools:registry=https://europe-npm.pkg.dev/startupsdna-tools/npm-public/
     ```
 
 2. Install the package:
